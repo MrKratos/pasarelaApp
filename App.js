@@ -1,5 +1,6 @@
 import React from 'react';
-import { StyleSheet, Text, View, SafeAreaView, ScrollView, TextInput, Pressable, onPress, Image, } from 'react-native';
+import { StyleSheet, Text, View, SafeAreaView, ScrollView, TextInput, Pressable, Image, Picker, } from 'react-native';
+import { DataTable } from 'react-native';
 
 class App extends React.Component {
   constructor(props){
@@ -14,6 +15,16 @@ class App extends React.Component {
       cvv: null,
       banco: null,
       tipo: null,
+      bank: 1,
+      value1: 0,
+      totalVal1: 0,
+      value2: 0,
+      totalVal2: 0,
+      subT: 0,
+      iva: 0,
+      total: 0,
+
+      
     }
   }
   setData = () => {
@@ -23,7 +34,7 @@ class App extends React.Component {
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(
             {
-              "id_banco":1,
+              "id_banco": this.state.bank,
               "id_proveedor":1,
               "nombre_cliente": this.state.nombre,
               "cedula_cliente": this.state.cedula,
@@ -33,7 +44,7 @@ class App extends React.Component {
               "tipo_tarjeta": this.state.tipo,
               "total": 87.50,
               "estado": 0,
-              "diferimiento": 3
+              "diferimiento": 3,
             }
           )
         }
@@ -46,6 +57,9 @@ class App extends React.Component {
 
     }
   }
+
+
+
   render(){
     return (
       
@@ -59,6 +73,20 @@ class App extends React.Component {
    style={{ width: 300, height: 80, alignContent: 'center', marginBottom: 20 }}
  />
    </View>
+
+      {/* tabla */}
+
+      
+        <Text style={styles.title}>Canasta $19.99</Text>
+
+        <Pressable style={styles.button2} onPress={this.setData.bind(this)}>
+           <Text style={styles.text}>-</Text>
+         </Pressable>
+         <Text style={styles.title1}>x</Text>
+         <Pressable style={styles.button2} onPress={this.setData.bind(this)}>
+           <Text style={styles.text}>+</Text>
+         </Pressable>
+
 
         <Text style={styles.title1}> Insert Credit/Debit Card </Text>
 
@@ -92,18 +120,35 @@ class App extends React.Component {
           value = { this.state.cvv }
           onChangeText={ val => this.setState({ cvv: val })}
         />
-         <Text style={styles.title}>Banck</Text>
+      <Text style={styles.title}>
+          {
+            "Bank:"
+          }
+        </Text>
+        <Picker style={styles.input} onValueChange={(itemValue, itemIndex) => this.setState({bank: itemValue})}>
+            <Picker.Item label="Banco Pichincha" value= { 1 } />
+            <Picker.Item label="Banco Guayaquil" value= { 2 } />
+            <Picker.Item label="BanEcuador" value= { 3 } />
+        </Picker>
+        
+
+
+         {/* <Text style={styles.title}>Bank</Text>
+      
+
         <TextInput
           style={styles.input}
           value = { this.state.banco }
           onChangeText={ val => this.setState({ banco: val })}
-        />
+        /> */}
          <Text style={styles.title}>Credit/Debit</Text>
         <TextInput
           style={styles.input}
           value = { this.state.tipo }
           onChangeText={ val => this.setState({ tipo: val })}
         />
+
+        
 
         <Text style={styles.title2}>SubTotal =   $78.5</Text>    
         <Text style={styles.title2}>iva =   $9.42</Text> 
@@ -168,7 +213,7 @@ const styles = StyleSheet.create({
     borderColor: '#7f8c8d',
     color: '#252626',
     height: 40,
-    fontSize: 16,
+    fontSize: 18,
     width: '100%',
     marginBottom: 10,
     borderRadius: 8,
@@ -201,6 +246,18 @@ const styles = StyleSheet.create({
     paddingVertical: 12,
     paddingHorizontal: 32,
     borderRadius: 30,
+    elevation: 3,
+    backgroundColor: '#e4348b'
+  },
+  button2: {
+    width: 50,
+    height: 50,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginTop: 10,
+    paddingVertical: 12,
+    paddingHorizontal: 32,
+    borderRadius: 5,
     elevation: 3,
     backgroundColor: '#e4348b'
   },

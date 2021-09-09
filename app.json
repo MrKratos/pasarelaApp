@@ -19,7 +19,7 @@
     "ios": {
       "supportsTablet": true
     },
-    "android": { "package": "com.loricode.payApp", "versionCode": 1,
+    "android": { "package": "com.tcs.payApp", "versionCode": 1,
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#FFFFFF"
