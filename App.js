@@ -130,17 +130,9 @@ class App extends React.Component {
             <Picker.Item label="Banco Guayaquil" value= { 2 } />
             <Picker.Item label="BanEcuador" value= { 3 } />
         </Picker>
+
+
         
-
-
-         {/* <Text style={styles.title}>Bank</Text>
-      
-
-        <TextInput
-          style={styles.input}
-          value = { this.state.banco }
-          onChangeText={ val => this.setState({ banco: val })}
-        /> */}
          <Text style={styles.title}>Credit/Debit</Text>
         <TextInput
           style={styles.input}
