@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, View, SafeAreaView, ScrollView, TextInput, Pressable, Image, Picker, } from 'react-native';
+import { StyleSheet, Text, View, SafeAreaView, ScrollView, TextInput, Pressable, Image, Picker, TouchableOpacity, } from 'react-native';
 import { DataTable } from 'react-native';
 
 class App extends React.Component {
@@ -74,18 +74,46 @@ class App extends React.Component {
  />
    </View>
 
+
       {/* tabla */}
 
-      
-        <Text style={styles.title}>Canasta $19.99</Text>
 
-        <Pressable style={styles.button2} onPress={this.setData.bind(this)}>
+
+      
+    <Text style={styles.title}>Canasta $19.99</Text>
+        
+    <View style={ styles.cont1 }>
+
+    <View style={ styles.cont2 }>
+
+      <TouchableOpacity 
+        style={ styles.cont3 }>
+
+        <Text style={styles.cont4} >-</Text>
+
+      </TouchableOpacity>  
+
+      <View style={styles.cont5}>
+      <Text style={styles.contador} >0</Text>
+      </View>
+
+      <TouchableOpacity style={ styles.cont3 }>
+        <Text style={styles.cont4} >+</Text>
+      </TouchableOpacity>
+
+    </View>
+
+     
+    </View>
+
+
+        {/* <Pressable style={styles.button2} onPress={this.setData.bind(this)}>
            <Text style={styles.text}>-</Text>
          </Pressable>
          <Text style={styles.title1}>x</Text>
          <Pressable style={styles.button2} onPress={this.setData.bind(this)}>
            <Text style={styles.text}>+</Text>
-         </Pressable>
+         </Pressable> */}
 
 
         <Text style={styles.title1}> Insert Credit/Debit Card </Text>
@@ -154,7 +182,7 @@ class App extends React.Component {
          </Pressable>
   
     </View>
-    <Image source={require('./assets/logoSupermarket.png')} />
+  
 </ScrollView>
 
 </SafeAreaView>
@@ -260,6 +288,47 @@ const styles = StyleSheet.create({
     letterSpacing: 0.25,
     color: 'white',
   },
+
+  cont1: {
+     justifyContent: 'center',
+      flex: 1,
+     
+  },
+  cont2: {
+    height: 50,
+    width: "100%",
+    paddingHorizontal: 10,
+    flexDirection: "row"
+},
+cont3: {
+  height: 50,
+  width: 70, 
+  alignItems: 'center',
+  justifyContent: 'center',
+  borderRadius: 10,
+  backgroundColor: '#e4348b'
+  
+},
+cont4: {
+  marginTop: -5,
+  color: "#fff",
+  fontWeight: 'bold',
+  fontSize: 28,
+  alignItems: 'center',
+  justifyContent: 'center',
+  
+},
+cont5: {
+  flex: 1,
+  justifyContent: 'center',
+  alignItems: 'center',
+},
+contador: {
+  color: "black",
+  fontSize: 26,
+  fontWeight: 'bold',
+},
+
 
 
 });
