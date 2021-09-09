@@ -1,6 +1,6 @@
 import React from 'react';
-import { StyleSheet, Text, View, SafeAreaView, ScrollView, TextInput, Pressable, Image, Picker, TouchableOpacity, } from 'react-native';
-import { DataTable } from 'react-native';
+import { StyleSheet, Text, View, SafeAreaView, ScrollView, TextInput, Pressable, Image, TouchableOpacity, } from 'react-native';
+import { Picker } from "@react-native-picker/picker";
 
 class App extends React.Component {
   constructor(props){
