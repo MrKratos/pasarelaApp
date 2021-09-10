@@ -1,13 +1,14 @@
 import React from 'react';
-import { StyleSheet, Text, View, SafeAreaView, ScrollView, TextInput, Pressable, Image, TouchableOpacity, Keyboard, } from 'react-native';
+import { StyleSheet, Text, View, SafeAreaView, ScrollView, TextInput, Pressable, Image, TouchableOpacity, Keyboard, Alert, } from 'react-native';
 import { Picker } from "@react-native-picker/picker";
+import axios from 'axios';
 
 class App extends React.Component {
   constructor(props){
     super(props);
 
     this.state = {
-      url: 'http://microtransaccion.herokuapp.com/rest/dataTrainee',
+      url: 'http://54.159.180.65:8091/rest/dataTrainee?token=',
       nombre: null,
       cedula: null,
       tarjeta: null,
@@ -24,7 +25,6 @@ class App extends React.Component {
       iva: 0,
       total: 0,
       diferido: 0,
-            
     }
       this.contador_1 = this.contador_1.bind(this);
       this.contador_2 = this.contador_2.bind(this);
@@ -37,34 +37,55 @@ class App extends React.Component {
 
   }
   setData = () => {
-    try {
-        let config = {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(
-            {
-              "id_banco": this.state.bank,
-              "id_proveedor":1,
-              "nombre_cliente": this.state.nombre,
-              "cedula_cliente": this.state.cedula,
-              "numero_tarjeta": this.state.tarjeta,
-              "fecha_caducidad": this.state.f_v,
-              "codigo_ccv": this.state.cvv,
-              "tipo_tarjeta": this.state.tipo,
-              "total": 87.50,
-              "estado": 0,
-              "diferimiento": 3,
-            }
-          )
+    axios.get('http://54.159.180.65:8091/rest/dataTrainee/gettoken').then(token => {
+      console.log(token.data)
+      axios.post(this.state.url + token.data, 
+        {
+        "id_banco": this.state.bank,
+        "id_proveedor":1,
+        "nombre_cliente": this.state.nombre,
+        "cedula_cliente": this.state.cedula,
+        "numero_tarjeta": this.state.tarjeta,
+        "fecha_caducidad": this.state.f_v,
+        "codigo_ccv": this.state.cvv,
+        "tipo_tarjeta": this.state.tipo,
+        "total": this.state.total,
+        "estado": 0,
+        "diferimiento": this.state.diferido,
+        })
+      .then(function(response) {
+        console.log(response)
+          if(response.data == "Aprobado"){
+            Alert.alert(
+              "Resultado",
+              "Aprobado",
+              [
+                { text: "OK", onPress: () => console.log("OK Pressed") }
+              ]
+            );
+          }
+          else if(response.data == "En proceso"){
+            Alert.alert(
+              "Resultado",
+              "En proceso",
+              [
+                { text: "OK", onPress: () => console.log("OK Pressed") }
+              ]
+            );
+          }
+          else if(response.data == "Reprobado"){
+            Alert.alert(
+              "Resultado",
+              "Reprobado",
+              [
+                { text: "OK", onPress: () => console.log("OK Pressed") }
+              ]
+            );
+          }
         }
-        fetch ('http://microtransaccion.herokuapp.com/rest/dataTrainee/', config)
-        //let json = await res.json
-        
-        console.log(config)
-    }
-    catch (error){
-
-    }
+      )
+      
+  })
   }
 
  contador_1() {
@@ -107,7 +128,7 @@ contador_3() {
 
   render(){
 
-    const { value1, value2 } = this.state;
+    const { value1, value2} = this.state;
 
     return (
       
@@ -239,7 +260,7 @@ contador_3() {
         />
          <Text style={styles.title}>CVV</Text>
         <TextInput
-            keyboardType="numeric"
+          keyboardType="numeric"
           style={styles.input}
           value = { this.state.cvv }
           onChangeText={ val => this.setState({ cvv: val })}
@@ -281,14 +302,19 @@ contador_3() {
 
         <Text style={styles.title2}>SubTotal =   $ {  ( (value1 * 20 ) + ( value2 * 15 ) - (((value1 * 20 ) + ( value2 * 15 )) /1.12) ).toFixed(2) }</Text>    
         <Text style={styles.title2}>iva =   $ { (((value1 * 20 ) + ( value2 * 15 )) /1.12).toFixed(2)  }</Text> 
-        <Text style={styles.title2}>Total = $ { ((value1 * 20 ) + ( value2 * 15 )).toFixed(2)  }</Text>   
-
+        <Text style={styles.title2}>Total = $ { ((value1 * 20 ) + ( value2 * 15 )).toFixed(2) }</Text>   
         {/* <button onClick={this.setData.bind(this)}>Pay</button> */}
 
+        <Pressable>
+        <TouchableOpacity style={ styles.buttonxx } onPress={  val => this.setState({total: ((value1 * 20 ) + ( value2 * 15 )) })}>
+           <Text style={styles.text}>Preparar Pago</Text>
+            { console.log( this.state.total ) }
+           </TouchableOpacity>
+        </Pressable>
 
         <Pressable style={styles.button} onPress={this.setData.bind(this)}>
            <Text style={styles.text}>Pay $ { (value1 * 20 ) + ( value2 * 15 ) }</Text>
-         </Pressable>
+        </Pressable>
   
     </View>
   
@@ -303,6 +329,16 @@ contador_3() {
 }
 
 const styles = StyleSheet.create({
+  buttonxx: {
+    alignItems: 'center',
+      justifyContent: 'center',
+      marginTop: 10,
+      paddingVertical: 12,
+      paddingHorizontal: 32,
+      borderRadius: 30,
+      elevation: 3,
+      backgroundColor: '#2451ab'
+  },
   container: {
     flex: 1,
     backgroundColor: '#fff',
